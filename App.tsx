@@ -8,6 +8,7 @@ import Component from './src/Component';
 
 import config from './tamagui.config';
 import {StyleSheet} from 'react-native';
+import Modals from './src/Modals';
 
 const Stack = createStackNavigator();
 
@@ -26,6 +27,7 @@ function App() {
             <Stack.Navigator>
               <Stack.Screen name="Home" component={HomeScreen} />
               <Stack.Screen name="Component" component={Component} />
+              <Stack.Screen name="Modals" component={Modals} />
             </Stack.Navigator>
           </NavigationContainer>
         </BottomSheetModalProvider>

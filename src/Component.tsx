@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {useMemo, useState} from 'react';
-import {Select, Adapt, Sheet, YStack, getFontSize} from 'tamagui';
-import {Check, ChevronDown, ChevronUp} from '@tamagui/lucide-icons';
+import {Select, Adapt, Sheet} from 'tamagui';
+import {Check, ChevronDown} from '@tamagui/lucide-icons';
 import {FullWindowOverlay} from 'react-native-screens';
 
 const styles = StyleSheet.create({
@@ -47,7 +47,7 @@ function Components() {
         </Select.Trigger>
 
         <Modal>
-        <Adapt when="sm" platform="touch">
+          <Adapt when="sm" platform="touch">
             <Sheet
               // native={!!native}
               snapPoints={[60, 100]}
@@ -71,7 +71,7 @@ function Components() {
                 exitStyle={{opacity: 0}}
               />
             </Sheet>
-        </Adapt>
+          </Adapt>
         </Modal>
 
         <Select.Content zIndex={200000}>

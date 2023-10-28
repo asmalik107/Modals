@@ -57,6 +57,7 @@ function HomeScreen() {
         title="Component"
         color="black"
       />
+      <Button onPress={() => navigate('Modals')} title="Modals" color="black" />
       <Button
         onPress={handlePresentModalPress}
         title="Present Modal"
