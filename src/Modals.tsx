@@ -1,5 +1,5 @@
 import {ChevronDown} from '@tamagui/lucide-icons';
-import React, {FC, PropsWithChildren, useState} from 'react';
+import React, {FC, PropsWithChildren, useState, useEffect} from 'react';
 import {
   ModalProps,
   Modal as RNModal,
@@ -35,12 +35,28 @@ const ModalWrapper: FC<PropsWithChildren<ModalProps>> = ({
 
 const Modals = () => {
   const [open, setOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const snapPoints = [50];
+
+  useEffect(() => {
+    if (open) {
+      setModalOpen(true);
+    } else {
+      setTimeout(() => {
+        setModalOpen(false);
+      }, 200);
+    }
+  }, [open]);
 
   return (
     <View style={styles.container}>
-      <Button onPress={() => setOpen(true)}>Modals</Button>
-      <ModalWrapper visible={open} onRequestClose={() => setOpen(false)}>
+      <Button
+        onPress={() => {
+          setOpen(true);
+        }}>
+        Modals
+      </Button>
+      <ModalWrapper visible={modalOpen} onRequestClose={() => setOpen(false)}>
         <Sheet
           // forceRemoveScrollEnabled={open}
           modal={false}
