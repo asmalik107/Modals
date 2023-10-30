@@ -27,7 +27,7 @@ const ModalWrapper: FC<PropsWithChildren<ModalProps>> = ({
   ...rest
 }) => {
   return (
-    <RNModal {...rest} animationType="slide" transparent={true}>
+    <RNModal {...rest} animationType="none" transparent={true}>
       {children}
     </RNModal>
   );
@@ -35,21 +35,28 @@ const ModalWrapper: FC<PropsWithChildren<ModalProps>> = ({
 
 const Modals = () => {
   const [open, setOpen] = useState(false);
-  const snapPoints = [85, 50, 25];
+  const snapPoints = [50];
 
   return (
     <View style={styles.container}>
       <Button onPress={() => setOpen(true)}>Modals</Button>
       <ModalWrapper visible={open} onRequestClose={() => setOpen(false)}>
         <Sheet
-          forceRemoveScrollEnabled={open}
-          modal
+          // forceRemoveScrollEnabled={open}
+          modal={false}
           open={open}
           onOpenChange={setOpen}
           snapPoints={snapPoints}
           // snapPointsMode={snapPointsMode}
+          dismissOnOverlayPress
           dismissOnSnapToBottom
           zIndex={100_000}
+          animationConfig={{
+            type: 'spring',
+            damping: 40,
+            mass: 1.2,
+            stiffness: 250,
+          }}
           animation="medium">
           <Sheet.Overlay
             animation="lazy"
@@ -62,13 +69,13 @@ const Modals = () => {
             justifyContent="center"
             alignItems="center"
             space="$5">
-            <Button
-              size="$6"
-              circular
-              icon={ChevronDown}
-              onPress={() => setOpen(false)}
-            />
             <View style={styles.contentContainer}>
+              <Button
+                size="$6"
+                circular
+                icon={ChevronDown}
+                onPress={() => setOpen(false)}
+              />
               <Text>Awesome1 🎉</Text>
             </View>
           </Sheet.Frame>
