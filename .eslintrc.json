@@ -18,11 +18,14 @@
     "plugins": [
         "@typescript-eslint",
         "react",
+        "unused-imports",
         "jest"
     ],
     "rules": {
+        "@typescript-eslint/no-unused-vars": "off",
         "react/react-in-jsx-scope": 0,
         "react/jsx-uses-react": "off",
+        "unused-imports/no-unused-imports": "error",
         "indent": [
             "error",
             "tab"

@@ -1,5 +1,5 @@
 import {ChevronDown} from '@tamagui/lucide-icons';
-import React, {FC, PropsWithChildren, useState, useEffect} from 'react';
+import {FC, PropsWithChildren, useState, useEffect} from 'react';
 import {
   ModalProps,
   Modal as RNModal,

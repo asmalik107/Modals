@@ -9,8 +9,26 @@ import Component from './src/Component';
 import config from './tamagui.config';
 import {StyleSheet} from 'react-native';
 import Modals from './src/Modals';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import Tabs from './src/Tabs';
 
-const Stack = createStackNavigator();
+export type RootStackParamList = {
+  Home: undefined;
+  Component: undefined;
+  Modals: undefined;
+  Tabs: undefined;
+};
+
+export type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
+
+export type ComponentProps = NativeStackScreenProps<
+  RootStackParamList,
+  'Component'
+>;
+
+export type ModalsProps = NativeStackScreenProps<RootStackParamList, 'Modals'>;
+
+const Stack = createStackNavigator<RootStackParamList>();
 
 const styles = StyleSheet.create({
   container: {
@@ -28,6 +46,7 @@ function App() {
               <Stack.Screen name="Home" component={HomeScreen} />
               <Stack.Screen name="Component" component={Component} />
               <Stack.Screen name="Modals" component={Modals} />
+              <Stack.Screen name="Tabs" component={Tabs} />
             </Stack.Navigator>
           </NavigationContainer>
         </BottomSheetModalProvider>

@@ -31,7 +31,9 @@ function Components() {
   const [open, setOpen] = useState(false);
   const native = true;
 
-  const Modal = true ? FullWindowOverlay : React.Fragment;
+  const isModal = true;
+
+  const Modal = isModal ? FullWindowOverlay : React.Fragment;
 
   return (
     <View style={styles.container}>
