@@ -1,6 +1,12 @@
 import {FC, useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
+import {
+  View,
+  Text,
+  StyleSheet,
+  LayoutChangeEvent,
+  useWindowDimensions,
+  type ViewStyle,
+} from 'react-native';
 import {
   TabView,
   TabBar,
@@ -9,6 +15,14 @@ import {
   Route,
 } from 'react-native-tab-view';
 import data from './data/data.json';
+import {useSize} from './hooks/useSize';
+import Animated, {
+  Extrapolation,
+  interpolate,
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
 
 const styles = StyleSheet.create({
   container: {
@@ -45,16 +59,24 @@ const styles = StyleSheet.create({
   tabStyle: {
     backgroundColor: 'pink',
   },
+  scroll: {
+    flexGrow: 1,
+  },
 });
 
-const Header = () => {
+type HeaderProps = {
+  containerStyle?: ViewStyle;
+  onLayout: (event: LayoutChangeEvent) => void;
+};
+
+const Header: FC<HeaderProps> = ({containerStyle, onLayout}) => {
   return (
-    <View style={styles.header}>
+    <Animated.View style={[styles.header, containerStyle]} onLayout={onLayout}>
       <Text>This</Text>
       <Text>is</Text>
       <Text>a</Text>
       <Text>Header</Text>
-    </View>
+    </Animated.View>
   );
 };
 
@@ -89,30 +111,8 @@ const renderTabBar = (props: TabBarProps<Route>) => (
   />
 );
 
-const renderScene = ({route}: RenderSceneProps<Route>) => {
-  let renderItem;
-  switch (route.key) {
-    case 'first':
-      renderItem = <FirstRoute />;
-      break;
-    case 'second':
-      renderItem = <SecondRoute />;
-      break;
-    case 'third':
-      renderItem = <ThirdRoute />;
-      break;
-    default:
-      null;
-  }
-
-  return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {renderItem}
-    </ScrollView>
-  );
-};
-
 const HeaderTabs: FC = () => {
+  const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     {key: 'first', title: 'First'},
@@ -120,15 +120,70 @@ const HeaderTabs: FC = () => {
     {key: 'third', title: 'Third'},
   ]);
 
+  const [size, onLayout] = useSize();
+
+  const headerHeight = size?.height ?? 0;
+  const minHeaderHeight = 64;
+
+  const translationY = useSharedValue(0);
+
+  const scrollHandler = useAnimatedScrollHandler(event => {
+    translationY.value = event.contentOffset.y;
+  });
+
+  const animatedHeaderStyle = useAnimatedStyle(() => ({
+    // opacity: interpolate(
+    //   translationY.value,
+    //   [0, headerHeight],
+    //   [0, 1],
+    //   Extrapolation.CLAMP,
+    // ),
+    transform: [
+      {
+        translateY: interpolate(
+          translationY.value,
+          [0, headerHeight],
+          [0, -headerHeight],
+          Extrapolation.CLAMP,
+        ),
+      },
+    ],
+  }));
+
+  const renderScene = ({route}: RenderSceneProps<Route>) => {
+    let renderItem;
+    switch (route.key) {
+      case 'first':
+        renderItem = <FirstRoute />;
+        break;
+      case 'second':
+        renderItem = <SecondRoute />;
+        break;
+      case 'third':
+        renderItem = <ThirdRoute />;
+        break;
+      default:
+        null;
+    }
+
+    return (
+      <Animated.ScrollView
+        contentContainerStyle={styles.scroll}
+        onScroll={scrollHandler}>
+        {renderItem}
+      </Animated.ScrollView>
+    );
+  };
+
   return (
     <View style={styles.container}>
-      <Header />
+      <Header containerStyle={animatedHeaderStyle} onLayout={onLayout} />
       <TabView
         navigationState={{index, routes}}
         renderScene={renderScene}
         renderTabBar={renderTabBar}
         onIndexChange={setIndex}
-        // initialLayout={{width: layout.width}}
+        initialLayout={{width: layout.width}}
       />
     </View>
   );
