@@ -126,49 +126,25 @@ const HeaderTabs: FC = () => {
   const translationY = useSharedValue(0);
 
   const scrollHandler = useAnimatedScrollHandler(event => {
-    console.log('event', event.contentOffset.y);
     translationY.value = event.contentOffset.y;
   });
 
   const animatedHeaderStyle = useAnimatedStyle(() => {
     if (!size) return {};
-    return {
-      // opacity: interpolate(
-      //   translationY.value,
-      //   [headerHeight, 0],
-      //   [0, 1],
-      //   Extrapolation.CLAMP,
-      // ),
-      transform: [
-        {
-          translateY: interpolate(
-            translationY.value,
-            [0, headerHeight],
-            [0, -headerHeight],
-            Extrapolation.CLAMP,
-          ),
-        },
-      ],
-      height: interpolate(
-        translationY.value,
-        [0, headerHeight],
-        [headerHeight, 0],
-        Extrapolation.CLAMP,
-      ),
-    };
-  });
 
-  const interpolatedHeightStyle2 = useAnimatedStyle(() => {
-    if (!size) return {};
-    console.log(translationY.value);
-    const height = interpolate(
+    const translateY = interpolate(
       translationY.value,
-      [0, -headerHeight],
       [0, headerHeight],
+      [0, -headerHeight],
       Extrapolation.CLAMP,
     );
-    console.log('height', height);
-    return {height};
+    const height = interpolate(
+      translationY.value,
+      [-headerHeight, 0, headerHeight],
+      [100, headerHeight, 0],
+      Extrapolation.CLAMP,
+    );
+    return {height, transform: [{translateY}]};
   });
 
   const renderTabBar = (props: TabBarProps<Route>) => (
@@ -197,6 +173,7 @@ const HeaderTabs: FC = () => {
 
     return (
       <Animated.ScrollView
+        bounces={false}
         contentContainerStyle={styles.scroll}
         onScroll={scrollHandler}>
         {renderItem}
