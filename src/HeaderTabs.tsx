@@ -42,8 +42,10 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: 'lightblue',
-    padding: 16,
     alignItems: 'center',
+  },
+  innerHeader: {
+    padding: 16,
   },
   contentContainer: {
     padding: 16,
@@ -72,10 +74,12 @@ type HeaderProps = {
 const Header: FC<HeaderProps> = ({containerStyle, onLayout}) => {
   return (
     <Animated.View style={[styles.header, containerStyle]} onLayout={onLayout}>
-      <Text>This</Text>
-      <Text>is</Text>
-      <Text>a</Text>
-      <Text>Header</Text>
+      <View style={styles.innerHeader}>
+        <Text>This</Text>
+        <Text>is</Text>
+        <Text>a</Text>
+        <Text>Header</Text>
+      </View>
     </Animated.View>
   );
 };
@@ -103,14 +107,6 @@ type TabBarProps<T extends Route> = SceneRendererProps & {
 
 type RenderSceneProps<T extends Route> = SceneRendererProps & {route: T};
 
-const renderTabBar = (props: TabBarProps<Route>) => (
-  <TabBar
-    {...props}
-    indicatorStyle={styles.indicatorStyle}
-    style={styles.tabStyle}
-  />
-);
-
 const HeaderTabs: FC = () => {
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
@@ -122,33 +118,66 @@ const HeaderTabs: FC = () => {
 
   const [size, onLayout] = useSize();
 
+  console.log('size', size);
+
   const headerHeight = size?.height ?? 0;
   const minHeaderHeight = 64;
 
   const translationY = useSharedValue(0);
 
   const scrollHandler = useAnimatedScrollHandler(event => {
+    console.log('event', event.contentOffset.y);
     translationY.value = event.contentOffset.y;
   });
 
-  const animatedHeaderStyle = useAnimatedStyle(() => ({
-    // opacity: interpolate(
-    //   translationY.value,
-    //   [0, headerHeight],
-    //   [0, 1],
-    //   Extrapolation.CLAMP,
-    // ),
-    transform: [
-      {
-        translateY: interpolate(
-          translationY.value,
-          [0, headerHeight],
-          [0, -headerHeight],
-          Extrapolation.CLAMP,
-        ),
-      },
-    ],
-  }));
+  const animatedHeaderStyle = useAnimatedStyle(() => {
+    if (!size) return {};
+    return {
+      // opacity: interpolate(
+      //   translationY.value,
+      //   [headerHeight, 0],
+      //   [0, 1],
+      //   Extrapolation.CLAMP,
+      // ),
+      transform: [
+        {
+          translateY: interpolate(
+            translationY.value,
+            [0, headerHeight],
+            [0, -headerHeight],
+            Extrapolation.CLAMP,
+          ),
+        },
+      ],
+      height: interpolate(
+        translationY.value,
+        [0, headerHeight],
+        [headerHeight, 0],
+        Extrapolation.CLAMP,
+      ),
+    };
+  });
+
+  const interpolatedHeightStyle2 = useAnimatedStyle(() => {
+    if (!size) return {};
+    console.log(translationY.value);
+    const height = interpolate(
+      translationY.value,
+      [0, -headerHeight],
+      [0, headerHeight],
+      Extrapolation.CLAMP,
+    );
+    console.log('height', height);
+    return {height};
+  });
+
+  const renderTabBar = (props: TabBarProps<Route>) => (
+    <TabBar
+      {...props}
+      indicatorStyle={styles.indicatorStyle}
+      style={styles.tabStyle}
+    />
+  );
 
   const renderScene = ({route}: RenderSceneProps<Route>) => {
     let renderItem;

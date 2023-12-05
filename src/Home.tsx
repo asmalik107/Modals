@@ -65,6 +65,11 @@ function HomeScreen() {
         color="black"
       />
       <Button
+        onPress={() => navigate('HeaderTabs2')}
+        title="Collapsible Tabs 2"
+        color="black"
+      />
+      <Button
         onPress={handlePresentModalPress}
         title="Present Modal"
         color="black"

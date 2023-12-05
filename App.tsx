@@ -12,6 +12,7 @@ import Modals from './src/Modals';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Tabs from './src/Tabs';
 import HeaderTabs from './src/HeaderTabs';
+import HeaderTabs2 from './src/HeaderTabs2';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -19,6 +20,7 @@ export type RootStackParamList = {
   Modals: undefined;
   Tabs: undefined;
   HeaderTabs: undefined;
+  HeaderTabs2: undefined;
 };
 
 export type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
@@ -50,6 +52,7 @@ function App() {
               <Stack.Screen name="Modals" component={Modals} />
               <Stack.Screen name="Tabs" component={Tabs} />
               <Stack.Screen name="HeaderTabs" component={HeaderTabs} />
+              <Stack.Screen name="HeaderTabs2" component={HeaderTabs2} />
             </Stack.Navigator>
           </NavigationContainer>
         </BottomSheetModalProvider>

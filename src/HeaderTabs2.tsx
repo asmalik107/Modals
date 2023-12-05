@@ -1,0 +1,146 @@
+import {FC, useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  LayoutChangeEvent,
+  useWindowDimensions,
+  ScrollView,
+} from 'react-native';
+
+import data from './data/data.json';
+import {useSize} from './hooks/useSize';
+import {SizableText, Tabs, TabsContentProps} from 'tamagui';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  first: {
+    flex: 1,
+    backgroundColor: '#ff4081',
+  },
+  second: {
+    flex: 1,
+    backgroundColor: '#673ab7',
+  },
+  third: {
+    flex: 1,
+    backgroundColor: '#123ab7',
+  },
+  header: {
+    backgroundColor: 'lightblue',
+    padding: 16,
+    alignItems: 'center',
+  },
+  contentContainer: {
+    padding: 16,
+  },
+  content: {
+    fontSize: 20,
+    marginBottom: 8,
+    color: 'white',
+  },
+  indicatorStyle: {
+    backgroundColor: 'white',
+  },
+  tabStyle: {
+    backgroundColor: 'pink',
+  },
+  scroll: {
+    flexGrow: 1,
+  },
+});
+
+type HeaderProps = {
+  onLayout: (event: LayoutChangeEvent) => void;
+};
+
+const Header: FC<HeaderProps> = ({onLayout}) => {
+  return (
+    <View style={[styles.header]} onLayout={onLayout}>
+      <Text>This</Text>
+      <Text>is</Text>
+      <Text>a</Text>
+      <Text>Header</Text>
+    </View>
+  );
+};
+
+const FirstRoute = () => (
+  <View style={[styles.first, styles.contentContainer]}>
+    {data.map(item => (
+      <Text key={item} style={styles.content}>
+        {item}
+      </Text>
+    ))}
+  </View>
+);
+
+const SecondRoute = () => (
+  <View style={styles.second}>
+    <Text>Second</Text>
+  </View>
+);
+const ThirdRoute = () => <View style={styles.third} />;
+
+const TabsContent = (props: TabsContentProps) => {
+  return (
+    <Tabs.Content
+      backgroundColor="$background"
+      key="tab3"
+      padding="$2"
+      alignItems="center"
+      justifyContent="center"
+      flex={1}
+      borderColor="$background"
+      borderRadius="$2"
+      borderTopLeftRadius={0}
+      borderTopRightRadius={0}
+      borderWidth="$2"
+      {...props}>
+      {props.children}
+    </Tabs.Content>
+  );
+};
+
+const HeaderTabs: FC = () => {
+  const layout = useWindowDimensions();
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
+    {key: 'first', title: 'First'},
+    {key: 'second', title: 'Second'},
+    {key: 'third', title: 'Third'},
+  ]);
+
+  const [size, onLayout] = useSize();
+
+  return (
+    <ScrollView style={styles.container} stickyHeaderIndices={[1]}>
+      <Header onLayout={onLayout} />
+      <Tabs
+        defaultValue="tab1"
+        width={layout.width}
+        orientation="horizontal"
+        flexDirection="column">
+        <Tabs.List>
+          <Tabs.Tab value="tab1">
+            <SizableText>Tab 1</SizableText>
+          </Tabs.Tab>
+          <Tabs.Tab value="tab2">
+            <SizableText>Tab 2</SizableText>
+          </Tabs.Tab>
+        </Tabs.List>
+
+        <TabsContent value="tab1">
+          <FirstRoute />
+        </TabsContent>
+        <TabsContent value="tab2">
+          <SecondRoute />
+        </TabsContent>
+      </Tabs>
+    </ScrollView>
+  );
+};
+
+export default HeaderTabs;
