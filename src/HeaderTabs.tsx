@@ -111,9 +111,9 @@ const HeaderTabs: FC = () => {
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    {key: 'first', title: 'First'},
-    {key: 'second', title: 'Second'},
-    {key: 'third', title: 'Third'},
+    {key: 'first', title: 'First Route'},
+    {key: 'second', title: 'Second Route'},
+    {key: 'third', title: 'Third Route'},
   ]);
 
   const [size, onLayout] = useSize();
@@ -138,18 +138,21 @@ const HeaderTabs: FC = () => {
       [0, -headerHeight],
       Extrapolation.CLAMP,
     );
+
     const height = interpolate(
       translationY.value,
       [-headerHeight, 0, headerHeight],
       [100, headerHeight, 0],
       Extrapolation.CLAMP,
     );
+
     return {height, transform: [{translateY}]};
   });
 
   const renderTabBar = (props: TabBarProps<Route>) => (
     <TabBar
       {...props}
+      scrollEnabled
       indicatorStyle={styles.indicatorStyle}
       style={styles.tabStyle}
     />
@@ -185,6 +188,7 @@ const HeaderTabs: FC = () => {
     <View style={styles.container}>
       <Header containerStyle={animatedHeaderStyle} onLayout={onLayout} />
       <TabView
+        lazy
         navigationState={{index, routes}}
         renderScene={renderScene}
         renderTabBar={renderTabBar}
