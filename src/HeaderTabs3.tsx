@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
   },
   scroll: {
     flexGrow: 1,
+    // paddingBottom: 48,
   },
 });
 
@@ -67,6 +68,8 @@ const HeaderTabs: FC = () => {
   ]);
 
   const [size, onLayout] = useSize();
+
+  console.log(size)
 
   const headerHeight = size?.height ?? 0;
 
@@ -95,14 +98,14 @@ const HeaderTabs: FC = () => {
     const opacity = interpolate(
       translationY.value,
       [headerHeight, headerHeight + 20],
-      [headerHeight, 0],
+      [0, 1],
       {extrapolateRight: Extrapolation.CLAMP},
     );
 
     const translateY = interpolate(
       translationY.value,
       [0, headerHeight],
-      [0, 1],
+      [headerHeight, 0],
       Extrapolation.CLAMP,
     );
 
@@ -127,6 +130,7 @@ const HeaderTabs: FC = () => {
 
     return (
       <Animated.ScrollView
+        // style={{ marginBottom: 48 }}
         bounces={false}
         contentContainerStyle={styles.scroll}
         onScroll={scrollHandler}
@@ -143,13 +147,15 @@ const HeaderTabs: FC = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container]}>
       <AnimatedHeader
         containerStyle={animatedHeaderStyle}
         onLayout={onLayout}
       />
       <TabView
         lazy
+        // style={{flex: 1}}
+        //sceneContainerStyle={{backgroundColor: 'green'}}
         navigationState={{index, routes}}
         renderScene={renderScene}
         renderTabBar={renderTabBar}

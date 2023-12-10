@@ -14,6 +14,7 @@ import Tabs from './src/Tabs';
 import HeaderTabs from './src/HeaderTabs';
 import HeaderTabs2 from './src/HeaderTabs2';
 import HeaderTabs3 from './src/HeaderTabs3';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -44,23 +45,25 @@ const styles = StyleSheet.create({
 
 function App() {
   return (
-    <TamaguiProvider config={config}>
-      <GestureHandlerRootView style={styles.container}>
-        <BottomSheetModalProvider>
-          <NavigationContainer>
-            <Stack.Navigator>
-              <Stack.Screen name="Home" component={HomeScreen} />
-              <Stack.Screen name="Component" component={Component} />
-              <Stack.Screen name="Modals" component={Modals} />
-              <Stack.Screen name="Tabs" component={Tabs} />
-              <Stack.Screen name="HeaderTabs" component={HeaderTabs} />
-              <Stack.Screen name="HeaderTabs2" component={HeaderTabs2} />
-              <Stack.Screen name="HeaderTabs3" component={HeaderTabs3} />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </BottomSheetModalProvider>
-      </GestureHandlerRootView>
-    </TamaguiProvider>
+    <SafeAreaProvider>
+      <TamaguiProvider config={config}>
+        <GestureHandlerRootView style={styles.container}>
+          <BottomSheetModalProvider>
+            <NavigationContainer>
+              <Stack.Navigator>
+                <Stack.Screen name="Home" component={HomeScreen} />
+                <Stack.Screen name="Component" component={Component} />
+                <Stack.Screen name="Modals" component={Modals} />
+                <Stack.Screen name="Tabs" component={Tabs} />
+                <Stack.Screen name="HeaderTabs" component={HeaderTabs} />
+                <Stack.Screen name="HeaderTabs2" component={HeaderTabs2} />
+                <Stack.Screen name="HeaderTabs3" component={HeaderTabs3} />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </BottomSheetModalProvider>
+        </GestureHandlerRootView>
+      </TamaguiProvider>
+    </SafeAreaProvider>
   );
 }
 
