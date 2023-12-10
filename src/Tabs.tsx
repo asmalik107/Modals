@@ -8,11 +8,6 @@ import {
 const HEADER_HEIGHT = 100;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
-    backgroundColor: 'white',
-  },
   header: {
     height: HEADER_HEIGHT,
     width: '100%',

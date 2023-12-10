@@ -5,14 +5,9 @@ import {
   LayoutChangeEvent,
   useWindowDimensions,
   type ViewStyle,
+  Platform,
 } from 'react-native';
-import {
-  TabView,
-  TabBar,
-  NavigationState,
-  SceneRendererProps,
-  Route,
-} from 'react-native-tab-view';
+import {TabView, TabBar, Route, TabBarProps} from 'react-native-tab-view';
 import {useSize} from './hooks/useSize';
 import Animated, {
   Extrapolation,
@@ -21,7 +16,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated';
-import {Header, renderTabScene} from './Tabs/TabViews';
+import {RenderSceneProps, Header, renderTabScene} from './Tabs/TabViews';
 
 const styles = StyleSheet.create({
   container: {
@@ -30,12 +25,19 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: 'lightblue',
     alignItems: 'center',
+    top: 0,
+    width: '100%',
+    position: 'absolute',
+    zIndex: 2,
   },
   indicatorStyle: {
     backgroundColor: 'white',
   },
   tabStyle: {
     backgroundColor: 'pink',
+  },
+  tabBar: {
+    zIndex: 10,
   },
   scroll: {
     flexGrow: 1,
@@ -55,12 +57,6 @@ const AnimatedHeader: FC<HeaderProps> = ({containerStyle, onLayout}) => {
   );
 };
 
-type TabBarProps<T extends Route> = SceneRendererProps & {
-  navigationState: NavigationState<T>;
-};
-
-type RenderSceneProps<T extends Route> = SceneRendererProps & {route: T};
-
 const HeaderTabs: FC = () => {
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
@@ -72,10 +68,7 @@ const HeaderTabs: FC = () => {
 
   const [size, onLayout] = useSize();
 
-  console.log('size', size);
-
   const headerHeight = size?.height ?? 0;
-  const minHeaderHeight = 64;
 
   const translationY = useSharedValue(0);
 
@@ -90,26 +83,43 @@ const HeaderTabs: FC = () => {
       translationY.value,
       [0, headerHeight],
       [0, -headerHeight],
-      Extrapolation.CLAMP,
+      {extrapolateLeft: Extrapolation.CLAMP},
     );
 
-    const height = interpolate(
+    return {transform: [{translateY}]};
+  });
+
+  const animatedTabBarStyle = useAnimatedStyle(() => {
+    if (!size) return {};
+
+    const opacity = interpolate(
       translationY.value,
-      [-headerHeight, 0, headerHeight],
-      [100, headerHeight, 0],
+      [headerHeight, headerHeight + 20],
+      [headerHeight, 0],
+      {extrapolateRight: Extrapolation.CLAMP},
+    );
+
+    const translateY = interpolate(
+      translationY.value,
+      [0, headerHeight],
+      [0, 1],
       Extrapolation.CLAMP,
     );
 
-    return {height, transform: [{translateY}]};
+    return {transform: [{translateY}]};
   });
 
   const renderTabBar = (props: TabBarProps<Route>) => (
-    <TabBar
-      {...props}
-      scrollEnabled
-      indicatorStyle={styles.indicatorStyle}
-      style={styles.tabStyle}
-    />
+    <Animated.View
+      style={[styles.tabBar, animatedTabBarStyle]}
+      onLayout={onLayout}>
+      <TabBar
+        {...props}
+        scrollEnabled
+        indicatorStyle={styles.indicatorStyle}
+        style={styles.tabStyle}
+      />
+    </Animated.View>
   );
 
   const renderScene = ({route}: RenderSceneProps<Route>) => {
@@ -119,7 +129,14 @@ const HeaderTabs: FC = () => {
       <Animated.ScrollView
         bounces={false}
         contentContainerStyle={styles.scroll}
-        onScroll={scrollHandler}>
+        onScroll={scrollHandler}
+        contentInset={Platform.select({ios: {top: headerHeight}})}
+        contentOffset={Platform.select({
+          ios: {
+            x: 0,
+            y: -headerHeight,
+          },
+        })}>
         {renderItem}
       </Animated.ScrollView>
     );

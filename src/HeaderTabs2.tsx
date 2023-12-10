@@ -8,47 +8,19 @@ import {
   ScrollView,
 } from 'react-native';
 
-import data from './data/data.json';
 import {useSize} from './hooks/useSize';
 import {SizableText, Tabs, TabsContentProps} from 'tamagui';
+import {FirstRoute, SecondRoute} from './Tabs/TabViews';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  first: {
-    flex: 1,
-    backgroundColor: '#ff4081',
-  },
-  second: {
-    flex: 1,
-    backgroundColor: '#673ab7',
-  },
-  third: {
-    flex: 1,
-    backgroundColor: '#123ab7',
-  },
+
   header: {
     backgroundColor: 'lightblue',
     padding: 16,
     alignItems: 'center',
-  },
-  contentContainer: {
-    padding: 16,
-  },
-  content: {
-    fontSize: 20,
-    marginBottom: 8,
-    color: 'white',
-  },
-  indicatorStyle: {
-    backgroundColor: 'white',
-  },
-  tabStyle: {
-    backgroundColor: 'pink',
-  },
-  scroll: {
-    flexGrow: 1,
   },
 });
 
@@ -66,23 +38,6 @@ const Header: FC<HeaderProps> = ({onLayout}) => {
     </View>
   );
 };
-
-const FirstRoute = () => (
-  <View style={[styles.first, styles.contentContainer]}>
-    {data.map(item => (
-      <Text key={item} style={styles.content}>
-        {item}
-      </Text>
-    ))}
-  </View>
-);
-
-const SecondRoute = () => (
-  <View style={styles.second}>
-    <Text>Second</Text>
-  </View>
-);
-const ThirdRoute = () => <View style={styles.third} />;
 
 const TabsContent = (props: TabsContentProps) => {
   return (

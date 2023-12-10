@@ -14,5 +14,6 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-uses-react': 'off',
     'unused-imports/no-unused-imports': 'error',
+    'react-native/no-unused-styles': 'error',
   },
 };
