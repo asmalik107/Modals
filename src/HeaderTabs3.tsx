@@ -72,6 +72,8 @@ const HeaderTabs: FC = () => {
   console.log(size);
 
   const headerHeight = size?.height ?? 0;
+  const tabViewOffset = Platform.OS === 'ios' && size ? -headerHeight : 0;
+  console.log('tabViewOffset', tabViewOffset);
 
   const translationY = useSharedValue(0);
 
@@ -84,7 +86,7 @@ const HeaderTabs: FC = () => {
 
     const translateY = interpolate(
       translationY.value,
-      [0, headerHeight],
+      [tabViewOffset, tabViewOffset + headerHeight],
       [0, -headerHeight],
       {extrapolateLeft: Extrapolation.CLAMP},
     );
@@ -104,7 +106,7 @@ const HeaderTabs: FC = () => {
 
     const translateY = interpolate(
       translationY.value,
-      [0, headerHeight],
+      [tabViewOffset, tabViewOffset + headerHeight],
       [headerHeight, 0],
       Extrapolation.CLAMP,
     );
