@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     top: 0,
     width: '100%',
     position: 'absolute',
-    zIndex: 2,
+    //zIndex: 2,
   },
   indicatorStyle: {
     backgroundColor: 'white',
@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
   },
   scroll: {
     flexGrow: 1,
-    // paddingBottom: 48,
   },
 });
 
@@ -132,7 +131,10 @@ const HeaderTabs: FC = () => {
       <Animated.ScrollView
         // style={{ marginBottom: 48 }}
         bounces={false}
-        contentContainerStyle={styles.scroll}
+        contentContainerStyle={[
+          styles.scroll,
+          Platform.select({android: {paddingTop: headerHeight}}),
+        ]}
         onScroll={scrollHandler}
         contentInset={Platform.select({ios: {top: headerHeight}})}
         contentOffset={Platform.select({
