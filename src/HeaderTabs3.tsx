@@ -63,12 +63,12 @@ const useScrollManager = (
   headerHeight: number,
 ) => {
   const tabViewOffset = Platform.OS === 'ios' ? -headerHeight : 0;
-  const translationY = useSharedValue(0);
+  const translationY = useSharedValue(-headerHeight);
   const scrollY = useRef(translationY).current;
   const [index, setIndex] = useState(0);
 
   const scrollHandler = useAnimatedScrollHandler(event => {
-    translationY.value = event.contentOffset.y;
+    scrollY.value = event.contentOffset.y;
   });
 
   const isListGliding = useRef(false);
@@ -81,11 +81,12 @@ const useScrollManager = (
     //scrollY.addListener(1, ({value}) => {
     const curRoute = routes[index].key;
     tabkeyToScrollPosition[curRoute] = scrollY.value;
+    console.log(curRoute, scrollY.value);
     // });
     // return () => {
     //   scrollY.removeListener(1);
     // };
-  }, [index, scrollY, routes, tabkeyToScrollPosition]);
+  }, [index, headerHeight, scrollY, routes, tabkeyToScrollPosition]);
 
   const syncScrollOffset = () => {
     const curRouteKey = routes[index].key;
