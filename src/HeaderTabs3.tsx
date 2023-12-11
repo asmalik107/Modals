@@ -69,7 +69,7 @@ const HeaderTabs: FC = () => {
 
   const [size, onLayout] = useSize();
 
-  console.log(size)
+  console.log(size);
 
   const headerHeight = size?.height ?? 0;
 
@@ -113,9 +113,7 @@ const HeaderTabs: FC = () => {
   });
 
   const renderTabBar = (props: TabBarProps<Route>) => (
-    <Animated.View
-      style={[styles.tabBar, animatedTabBarStyle]}
-      onLayout={onLayout}>
+    <Animated.View style={[styles.tabBar, animatedTabBarStyle]}>
       <TabBar
         {...props}
         scrollEnabled
