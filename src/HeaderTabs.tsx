@@ -72,8 +72,6 @@ const HeaderTabs: FC = () => {
 
   const [size, onLayout] = useSize();
 
-  console.log('size', size);
-
   const headerHeight = size?.height ?? 0;
   const minHeaderHeight = 64;
 

@@ -68,11 +68,8 @@ const HeaderTabs: FC = () => {
 
   const [size, onLayout] = useSize();
 
-  console.log(size);
-
   const headerHeight = size?.height ?? 0;
   const tabViewOffset = Platform.OS === 'ios' && size ? -headerHeight : 0;
-  console.log('tabViewOffset', tabViewOffset);
 
   const translationY = useSharedValue(0);
 
