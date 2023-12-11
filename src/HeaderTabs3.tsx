@@ -1,4 +1,4 @@
-import {FC, useState} from 'react';
+import {FC, useEffect, useRef, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -6,6 +6,7 @@ import {
   useWindowDimensions,
   type ViewStyle,
   Platform,
+  ScrollView,
 } from 'react-native';
 import {TabView, TabBar, Route, TabBarProps} from 'react-native-tab-view';
 import {useSize} from './hooks/useSize';
@@ -57,9 +58,116 @@ const AnimatedHeader: FC<HeaderProps> = ({containerStyle, onLayout}) => {
   );
 };
 
+const useScrollManager = (
+  routes: {key: string; title: string}[],
+  headerHeight: number,
+) => {
+  const tabViewOffset = Platform.OS === 'ios' ? -headerHeight : 0;
+  const translationY = useSharedValue(0);
+  const scrollY = useRef(translationY).current;
+  const [index, setIndex] = useState(0);
+
+  const scrollHandler = useAnimatedScrollHandler(event => {
+    translationY.value = event.contentOffset.y;
+  });
+
+  const isListGliding = useRef(false);
+  const tabkeyToScrollPosition = useRef<{[key: string]: number}>({}).current;
+  const tabkeyToScrollableChildRef = useRef<{[key: string]: ScrollView}>(
+    {},
+  ).current;
+
+  useEffect(() => {
+    //scrollY.addListener(1, ({value}) => {
+    const curRoute = routes[index].key;
+    tabkeyToScrollPosition[curRoute] = scrollY.value;
+    // });
+    // return () => {
+    //   scrollY.removeListener(1);
+    // };
+  }, [index, scrollY, routes, tabkeyToScrollPosition]);
+
+  const syncScrollOffset = () => {
+    const curRouteKey = routes[index].key;
+    const scrollValue = tabkeyToScrollPosition[curRouteKey];
+
+    Object.keys(tabkeyToScrollableChildRef).forEach(key => {
+      const scrollRef = tabkeyToScrollableChildRef[key];
+      if (!scrollRef) {
+        return;
+      }
+
+      if (/* header visible */ key !== curRouteKey) {
+        if (scrollValue <= tabViewOffset + headerHeight) {
+          scrollRef.scrollTo({
+            y: Math.max(
+              Math.min(scrollValue, tabViewOffset + headerHeight),
+              tabViewOffset,
+            ),
+            animated: false,
+          });
+          // scrollRef.scrollToOffset({
+          //   offset: Math.max(
+          //     Math.min(scrollValue, tabViewOffset + headerHeight),
+          //     tabViewOffset,
+          //   ),
+          //   animated: false,
+          // });
+          tabkeyToScrollPosition[key] = scrollValue;
+        } else if (
+          /* header hidden */
+          tabkeyToScrollPosition[key] < tabViewOffset + headerHeight ||
+          tabkeyToScrollPosition[key] == null
+        ) {
+          // scrollRef.scrollToOffset({
+          //   offset: tabViewOffset + headerHeight,
+          //   animated: false,
+          // });
+          scrollRef.scrollTo({
+            y: tabViewOffset + headerHeight,
+            animated: false,
+          });
+          tabkeyToScrollPosition[key] = tabViewOffset + headerHeight;
+        }
+      }
+    });
+  };
+
+  const onMomentumScrollBegin = () => {
+    isListGliding.current = true;
+  };
+
+  const onMomentumScrollEnd = () => {
+    isListGliding.current = false;
+    syncScrollOffset();
+  };
+
+  const onScrollEndDrag = () => {
+    syncScrollOffset();
+  };
+
+  const trackRef = (key: string, ref: ScrollView) => {
+    tabkeyToScrollableChildRef[key] = ref;
+  };
+
+  const getRefForKey = (key: string) => tabkeyToScrollableChildRef[key];
+
+  return {
+    index,
+    getRefForKey,
+    onMomentumScrollBegin,
+    onMomentumScrollEnd,
+    onScrollEndDrag,
+    setIndex,
+    scrollHandler,
+    scrollY,
+    tabViewOffset,
+    trackRef,
+  };
+};
+
 const HeaderTabs: FC = () => {
   const layout = useWindowDimensions();
-  const [index, setIndex] = useState(0);
   const [routes] = useState([
     {key: 'first', title: 'First Route'},
     {key: 'second', title: 'Second Route'},
@@ -69,19 +177,23 @@ const HeaderTabs: FC = () => {
   const [size, onLayout] = useSize();
 
   const headerHeight = size?.height ?? 0;
-  const tabViewOffset = Platform.OS === 'ios' && size ? -headerHeight : 0;
 
-  const translationY = useSharedValue(0);
-
-  const scrollHandler = useAnimatedScrollHandler(event => {
-    translationY.value = event.contentOffset.y;
-  });
+  const {
+    index,
+    setIndex,
+    scrollHandler,
+    scrollY,
+    tabViewOffset,
+    getRefForKey,
+    trackRef,
+    ...sceneProps
+  } = useScrollManager(routes, headerHeight);
 
   const animatedHeaderStyle = useAnimatedStyle(() => {
     if (!size) return {};
 
     const translateY = interpolate(
-      translationY.value,
+      scrollY.value,
       [tabViewOffset, tabViewOffset + headerHeight],
       [0, -headerHeight],
       {extrapolateLeft: Extrapolation.CLAMP},
@@ -94,14 +206,14 @@ const HeaderTabs: FC = () => {
     if (!size) return {};
 
     const opacity = interpolate(
-      translationY.value,
+      scrollY.value,
       [headerHeight, headerHeight + 20],
       [0, 1],
       {extrapolateRight: Extrapolation.CLAMP},
     );
 
     const translateY = interpolate(
-      translationY.value,
+      scrollY.value,
       [tabViewOffset, tabViewOffset + headerHeight],
       [headerHeight, 0],
       Extrapolation.CLAMP,
@@ -127,6 +239,10 @@ const HeaderTabs: FC = () => {
     return (
       <Animated.ScrollView
         // style={{ marginBottom: 48 }}
+        ref={(ref: any) => {
+          trackRef(route.key, ref);
+        }}
+        {...sceneProps}
         bounces={false}
         contentContainerStyle={[
           styles.scroll,
