@@ -63,8 +63,7 @@ const useScrollManager = (
   headerHeight: number,
 ) => {
   const tabViewOffset = Platform.OS === 'ios' ? -headerHeight : 0;
-  const translationY = useSharedValue(-headerHeight);
-  const scrollY = useRef(translationY).current;
+  const scrollY = useSharedValue(-headerHeight);
   const [index, setIndex] = useState(0);
 
   const scrollHandler = useAnimatedScrollHandler(event => {
@@ -78,19 +77,52 @@ const useScrollManager = (
   ).current;
 
   useEffect(() => {
-    //scrollY.addListener(1, ({value}) => {
     const curRoute = routes[index].key;
     tabkeyToScrollPosition[curRoute] = scrollY.value;
-    console.log(curRoute, scrollY.value);
-    // });
-    // return () => {
-    //   scrollY.removeListener(1);
-    // };
   }, [index, headerHeight, scrollY, routes, tabkeyToScrollPosition]);
+
+  const scrollToOffset = (
+    scrollRef: ScrollView,
+    key: string,
+    scrollValue: number,
+  ) => {
+    /* header visible */
+    if (scrollValue <= tabViewOffset + headerHeight) {
+      scrollRef.scrollTo({
+        y: Math.max(
+          Math.min(scrollValue, tabViewOffset + headerHeight),
+          tabViewOffset,
+        ),
+        animated: false,
+      });
+      // scrollRef.scrollToOffset({
+      //   offset: Math.max(
+      //     Math.min(scrollValue, tabViewOffset + headerHeight),
+      //     tabViewOffset,
+      //   ),
+      //   animated: false,
+      // });
+      tabkeyToScrollPosition[key] = scrollValue;
+    } else if (
+      /* header hidden */
+      tabkeyToScrollPosition[key] < tabViewOffset + headerHeight ||
+      tabkeyToScrollPosition[key] == null
+    ) {
+      // scrollRef.scrollToOffset({
+      //   offset: tabViewOffset + headerHeight,
+      //   animated: false,
+      // });
+      scrollRef.scrollTo({
+        y: tabViewOffset + headerHeight,
+        animated: false,
+      });
+      tabkeyToScrollPosition[key] = tabViewOffset + headerHeight;
+    }
+  };
 
   const syncScrollOffset = () => {
     const curRouteKey = routes[index].key;
-    const scrollValue = tabkeyToScrollPosition[curRouteKey];
+    const scrollValue = scrollY.value;
 
     Object.keys(tabkeyToScrollableChildRef).forEach(key => {
       const scrollRef = tabkeyToScrollableChildRef[key];
@@ -98,38 +130,8 @@ const useScrollManager = (
         return;
       }
 
-      if (/* header visible */ key !== curRouteKey) {
-        if (scrollValue <= tabViewOffset + headerHeight) {
-          scrollRef.scrollTo({
-            y: Math.max(
-              Math.min(scrollValue, tabViewOffset + headerHeight),
-              tabViewOffset,
-            ),
-            animated: false,
-          });
-          // scrollRef.scrollToOffset({
-          //   offset: Math.max(
-          //     Math.min(scrollValue, tabViewOffset + headerHeight),
-          //     tabViewOffset,
-          //   ),
-          //   animated: false,
-          // });
-          tabkeyToScrollPosition[key] = scrollValue;
-        } else if (
-          /* header hidden */
-          tabkeyToScrollPosition[key] < tabViewOffset + headerHeight ||
-          tabkeyToScrollPosition[key] == null
-        ) {
-          // scrollRef.scrollToOffset({
-          //   offset: tabViewOffset + headerHeight,
-          //   animated: false,
-          // });
-          scrollRef.scrollTo({
-            y: tabViewOffset + headerHeight,
-            animated: false,
-          });
-          tabkeyToScrollPosition[key] = tabViewOffset + headerHeight;
-        }
+      if (key !== curRouteKey) {
+        scrollToOffset(scrollRef, key, scrollValue);
       }
     });
   };
@@ -148,7 +150,10 @@ const useScrollManager = (
   };
 
   const trackRef = (key: string, ref: ScrollView) => {
-    tabkeyToScrollableChildRef[key] = ref;
+    if (ref) {
+      tabkeyToScrollableChildRef[key] = ref;
+      scrollToOffset(ref, key, scrollY.value);
+    }
   };
 
   const getRefForKey = (key: string) => tabkeyToScrollableChildRef[key];
@@ -247,7 +252,9 @@ const HeaderTabs: FC = () => {
         bounces={false}
         contentContainerStyle={[
           styles.scroll,
-          Platform.select({android: {paddingTop: headerHeight}}),
+          Platform.select({
+            android: {paddingTop: headerHeight, minHeight: layout.height},
+          }),
         ]}
         onScroll={scrollHandler}
         contentInset={Platform.select({ios: {top: headerHeight}})}
