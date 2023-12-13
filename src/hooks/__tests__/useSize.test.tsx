@@ -22,21 +22,11 @@ describe('useSize', () => {
         defaultPrevented: false,
         eventPhase: 0,
         isTrusted: false,
-        preventDefault: function (): void {
-          throw new Error('Function not implemented.');
-        },
-        isDefaultPrevented: function (): boolean {
-          throw new Error('Function not implemented.');
-        },
-        stopPropagation: function (): void {
-          throw new Error('Function not implemented.');
-        },
-        isPropagationStopped: function (): boolean {
-          throw new Error('Function not implemented.');
-        },
-        persist: function (): void {
-          throw new Error('Function not implemented.');
-        },
+        preventDefault: jest.fn(),
+        isDefaultPrevented: jest.fn(),
+        stopPropagation: jest.fn(),
+        isPropagationStopped: jest.fn(),
+        persist: jest.fn(),
         timeStamp: 0,
         type: '',
       });
