@@ -9,7 +9,7 @@ import {
   ScrollView,
 } from 'react-native';
 import {TabView, TabBar, Route, TabBarProps} from 'react-native-tab-view';
-import {useSize} from './hooks/useSize';
+import {useSize} from '../hooks/useSize';
 import Animated, {
   Extrapolation,
   interpolate,
@@ -17,7 +17,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated';
-import {RenderSceneProps, Header, renderTabScene} from './Tabs/TabViews';
+import {RenderSceneProps, Header, renderTabScene} from './TabViews';
 
 const styles = StyleSheet.create({
   container: {

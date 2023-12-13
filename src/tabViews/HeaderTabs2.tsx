@@ -8,9 +8,9 @@ import {
   ScrollView,
 } from 'react-native';
 
-import {useSize} from './hooks/useSize';
+import {useSize} from '../hooks/useSize';
 import {SizableText, Tabs, TabsContentProps} from 'tamagui';
-import {FirstRoute, SecondRoute} from './Tabs/TabViews';
+import {FirstRoute, SecondRoute} from './TabViews';
 
 const styles = StyleSheet.create({
   container: {

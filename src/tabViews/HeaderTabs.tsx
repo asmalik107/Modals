@@ -13,7 +13,7 @@ import {
   SceneRendererProps,
   Route,
 } from 'react-native-tab-view';
-import {useSize} from './hooks/useSize';
+import {useSize} from '../hooks/useSize';
 import Animated, {
   Extrapolation,
   interpolate,
@@ -21,7 +21,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated';
-import {Header, renderTabScene} from './Tabs/TabViews';
+import {Header, renderTabScene} from './TabViews';
 
 const styles = StyleSheet.create({
   container: {

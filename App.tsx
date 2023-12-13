@@ -11,9 +11,9 @@ import {StyleSheet} from 'react-native';
 import Modals from './src/Modals';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Tabs from './src/Tabs';
-import HeaderTabs from './src/HeaderTabs';
-import HeaderTabs2 from './src/HeaderTabs2';
-import HeaderTabs3 from './src/HeaderTabs3';
+import HeaderTabs from './src/tabViews/HeaderTabs';
+import HeaderTabs2 from './src/tabViews/HeaderTabs2';
+import HeaderTabs3 from './src/tabViews/HeaderTabs3';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 export type RootStackParamList = {
