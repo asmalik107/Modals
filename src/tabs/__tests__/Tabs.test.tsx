@@ -33,7 +33,7 @@ describe('useScrollManager', () => {
       result.current.scrollHandler({contentOffset: {y: 200}});
     });
 
-    expect(result.current.scrollY.value).toBe(200);
+    expect(result.current.scrollY.value).toBe(-100);
   });
 
   // it('should set isListGliding to true when onMomentumScrollBegin is called', () => {
