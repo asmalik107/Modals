@@ -58,7 +58,7 @@ const AnimatedHeader: FC<HeaderProps> = ({containerStyle, onLayout}) => {
   );
 };
 
-const useScrollManager = (
+export const useScrollManager = (
   routes: {key: string; title: string}[],
   headerHeight: number,
 ) => {
