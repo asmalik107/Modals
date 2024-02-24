@@ -15,6 +15,8 @@ import HeaderTabs from './src/tabs/HeaderTabs';
 import HeaderTabs2 from './src/tabs/HeaderTabs2';
 import HeaderTabs3 from './src/tabs/HeaderTabs3';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import CardScreen from './src/cards/Card';
+import TestScreen from './src/accessibility/Test';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -24,6 +26,8 @@ export type RootStackParamList = {
   HeaderTabs: undefined;
   HeaderTabs2: undefined;
   HeaderTabs3: undefined;
+  Cards: undefined;
+  Accessibility: undefined;
 };
 
 export type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
@@ -58,6 +62,8 @@ function App() {
                 <Stack.Screen name="HeaderTabs" component={HeaderTabs} />
                 <Stack.Screen name="HeaderTabs2" component={HeaderTabs2} />
                 <Stack.Screen name="HeaderTabs3" component={HeaderTabs3} />
+                <Stack.Screen name="Cards" component={CardScreen} />
+                <Stack.Screen name="Accessibility" component={TestScreen} />
               </Stack.Navigator>
             </NavigationContainer>
           </BottomSheetModalProvider>
