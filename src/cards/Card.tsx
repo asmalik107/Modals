@@ -43,23 +43,40 @@ function CardScreen() {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.container}>
-        <Text>Card Screen</Text>
-        <View accessible style={styles.card}>
-          <View style={styles.row}>
+        <Text testID="title-text">Card Screen</Text>
+        <View accessible testID="card-container" style={styles.card}>
+          <View testID="header" style={styles.row}>
             <PersonStanding />
-            <Text style={styles.text}>TOMAN</Text>
+            <Text testID="toman" style={styles.text}>
+              TOMAN
+            </Text>
           </View>
-          <View style={styles.name}>
-            <Text style={styles.text}>President</Text>
-            <Text style={styles.text}>Mikey</Text>
+          <View testID="names-container">
+            <View testID="name-container" style={styles.name}>
+              <Text style={styles.text}>President</Text>
+              <Text style={styles.text}>Mikey</Text>
+            </View>
+            <View testID="name-container" style={styles.name}>
+              <Text style={styles.text}>Vice President</Text>
+              <Text style={styles.text}>Draken</Text>
+            </View>
+            <View testID="name-container" style={styles.name}>
+              <Text style={styles.text}>Captain</Text>
+              <Text style={styles.text}>Takamitchy</Text>
+            </View>
           </View>
-          <View style={styles.name}>
-            <Text style={styles.text}>Vice President</Text>
-            <Text style={styles.text}>Draken</Text>
-          </View>
-          <View style={styles.name}>
-            <Text style={styles.text}>Captain</Text>
-            <Text style={styles.text}>Takamitchy</Text>
+        </View>
+        <View accessible style={styles.card}>
+          <Text testID="testID1">Some Text </Text>
+          <Text testID="testID2">Other Text </Text>
+          <View testID="inner-container">
+            <Text testID="testID3">inner Some Text </Text>
+            <View>
+              <Text testID="testID4">inner Other Text </Text>
+              <View>
+                <Text testID="testID5">inner Other Text </Text>
+              </View>
+            </View>
           </View>
         </View>
       </View>
