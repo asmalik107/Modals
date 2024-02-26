@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 function CardScreen() {
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.container}>
+      <View style={styles.container} testID="card-container">
         <Text testID="title-text">Card Screen</Text>
         <View accessible testID="card-container" style={styles.card}>
           <View testID="header" style={styles.row}>
@@ -52,17 +52,17 @@ function CardScreen() {
             </Text>
           </View>
           <View testID="names-container">
-            <View testID="name-container" style={styles.name}>
+            <View style={styles.name}>
               <Text style={styles.text}>President</Text>
               <Text style={styles.text}>Mikey</Text>
             </View>
-            <View testID="name-container" style={styles.name}>
+            <View style={styles.name}>
               <Text style={styles.text}>Vice President</Text>
               <Text style={styles.text}>Draken</Text>
-            </View>
-            <View testID="name-container" style={styles.name}>
-              <Text style={styles.text}>Captain</Text>
-              <Text style={styles.text}>Takamitchy</Text>
+              <View style={styles.name}>
+                <Text style={styles.text}>Captain</Text>
+                <Text style={styles.text}>Takamitchy</Text>
+              </View>
             </View>
           </View>
         </View>
