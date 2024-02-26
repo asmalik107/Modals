@@ -1,4 +1,4 @@
-import {PersonStanding, Plus} from '@tamagui/lucide-icons';
+import {PersonStanding} from '@tamagui/lucide-icons';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 
 const styles = StyleSheet.create({
@@ -57,6 +57,26 @@ function CardScreen() {
               <Text style={styles.text}>Mikey</Text>
             </View>
             <View testID="name-container" style={styles.name}>
+              <Text style={styles.text}>Vice President</Text>
+              <Text style={styles.text}>Draken</Text>
+            </View>
+            <View testID="name-container" style={styles.name}>
+              <Text style={styles.text}>Captain</Text>
+              <Text style={styles.text}>Takamitchy</Text>
+            </View>
+          </View>
+        </View>
+        <View accessible testID="card-container" style={styles.card}>
+          <View style={styles.row}>
+            <PersonStanding />
+            <Text style={styles.text}>TOMAN</Text>
+          </View>
+          <View>
+            <View style={styles.name}>
+              <Text style={styles.text}>President</Text>
+              <Text style={styles.text}>Mikey</Text>
+            </View>
+            <View style={styles.name}>
               <Text style={styles.text}>Vice President</Text>
               <Text style={styles.text}>Draken</Text>
             </View>
