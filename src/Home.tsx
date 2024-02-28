@@ -1,6 +1,6 @@
 import {BottomSheetBackdrop, BottomSheetModal} from '@gorhom/bottom-sheet';
 import {useCallback, useMemo, useRef} from 'react';
-import {Alert, Button, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Button, ScrollView, StyleSheet, Text, View} from 'react-native';
 
 import {BottomSheetDefaultBackdropProps} from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types';
 import {useNavigation} from '@react-navigation/native';
@@ -20,14 +20,6 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     alignItems: 'center',
-  },
-  text: {
-    marginVertical: 10,
-  },
-  card: {
-    padding: 10,
-    borderWidth: 1,
-    marginVertical: 10,
   },
 });
 

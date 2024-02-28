@@ -104,6 +104,7 @@ function Components() {
                       </Select.Item>
                     );
                   }),
+                // eslint-disable-next-line react-hooks/exhaustive-deps
                 [items],
               )}
             </Select.Group>

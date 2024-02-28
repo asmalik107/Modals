@@ -245,7 +245,7 @@ const HeaderTabs: FC = () => {
     return (
       <Animated.ScrollView
         // style={{ marginBottom: 48 }}
-        ref={(ref: any) => {
+        ref={(ref: Animated.ScrollView) => {
           trackRef(route.key, ref);
         }}
         {...sceneProps}
