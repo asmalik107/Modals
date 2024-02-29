@@ -68,7 +68,7 @@ export const useScrollManager = (
 
   const scrollHandler = useAnimatedScrollHandler(event => {
     scrollY.value = event.contentOffset.y;
-  });
+  }, []);
 
   const isListGliding = useRef(false);
   const tabkeyToScrollPosition = useRef<{[key: string]: number}>({}).current;
