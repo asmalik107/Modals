@@ -1,4 +1,12 @@
-import {Alert, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+  Alert,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import {H2, Text as TText} from 'tamagui';
 
 const styles = StyleSheet.create({
   container: {
@@ -20,7 +28,12 @@ function TestScreen() {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.container}>
-        <Text>Home Screen</Text>
+        <Text accessibilityRole="header">Home Screen</Text>
+        <Pressable accessibilityRole="none">
+          <Text>Pressable Header</Text>
+        </Pressable>
+        <H2 disabled>Testing accessibility 1</H2>
+        <TText accessibilityRole="header">Testing accessibility 2</TText>
         <View
           style={{
             height: 400,
@@ -51,7 +64,7 @@ function TestScreen() {
           <Text>Testing accessibility</Text>
         </View>
         <View accessible style={styles.card}>
-          <Text style={styles.text}>*</Text>
+          <Text style={styles.text}>Test</Text>
           <Text style={styles.text}>text one</Text>
           <Text style={styles.text}>text two</Text>
           <Text style={styles.text}> here</Text>
