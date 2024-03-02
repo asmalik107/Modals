@@ -74,7 +74,16 @@ function HomeScreen() {
           title="Modals"
           color="black"
         />
-        <Button onPress={() => navigate('Tabs')} title="Tabs" color="black" />
+        <Button
+          onPress={() => navigate('CollapsibleTabs')}
+          title="Collapsible Tabs Component"
+          color="black"
+        />
+        <Button
+          onPress={() => navigate('HeaderTabs')}
+          title="Collapsible Tabs (old)"
+          color="black"
+        />
         <Button
           onPress={() => navigate('HeaderTabs')}
           title="Collapsible Tabs"

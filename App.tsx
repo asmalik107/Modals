@@ -18,6 +18,7 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import CardScreen from './src/cards/Card';
 import TestScreen from './src/accessibility/Test';
 import TranslationsScreen from './src/translations/Translations';
+import CollapsibleTabsScreen from './src/tabs/CollapsibleTabs';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -30,6 +31,7 @@ export type RootStackParamList = {
   Cards: undefined;
   Accessibility: undefined;
   Translations: undefined;
+  CollapsibleTabs: undefined;
 };
 
 export type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
@@ -60,6 +62,10 @@ function App() {
                 <Stack.Screen name="Home" component={HomeScreen} />
                 <Stack.Screen name="Component" component={Component} />
                 <Stack.Screen name="Modals" component={Modals} />
+                <Stack.Screen
+                  name="CollapsibleTabs"
+                  component={CollapsibleTabsScreen}
+                />
                 <Stack.Screen name="Tabs" component={Tabs} />
                 <Stack.Screen name="HeaderTabs" component={HeaderTabs} />
                 <Stack.Screen name="HeaderTabs2" component={HeaderTabs2} />
