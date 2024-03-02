@@ -7,10 +7,9 @@ import Animated, {
   interpolate,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import {RenderSceneProps, renderTabScene} from '../TabViews';
+import {RenderSceneProps} from '../TabViews';
 import {useScrollManager} from './hooks/useScrollManager';
 import {ContainerProps, HeaderProps} from './types';
-import {ScrollView} from './ScrollView';
 import {TabsContext} from './Context';
 
 const styles = StyleSheet.create({
@@ -51,7 +50,7 @@ const AnimatedHeader: FC<HeaderProps> = ({
   );
 };
 
-export const Container: FC<ContainerProps> = ({header}) => {
+export const Container: FC<ContainerProps> = ({header, renderTabScene}) => {
   const layout = useWindowDimensions();
   const [routes] = useState([
     {key: 'first', title: 'First Route'},
@@ -119,39 +118,7 @@ export const Container: FC<ContainerProps> = ({header}) => {
   );
 
   const renderScene = ({route}: RenderSceneProps<Route>) => {
-    const renderItem = renderTabScene(route);
-
-    // return (
-    //   <Animated.ScrollView
-    //     // style={{ marginBottom: 48 }}
-    //     ref={(ref: Animated.ScrollView) => {
-    //       trackRef(route.key, ref);
-    //     }}
-    //     {...sceneProps}
-    //     bounces={false}
-    //     contentContainerStyle={[
-    //       styles.scroll,
-    //       Platform.select({
-    //         android: {paddingTop: headerHeight, minHeight: layout.height},
-    //       }),
-    //     ]}
-    //     onScroll={scrollHandler}
-    //     contentInset={Platform.select({ios: {top: headerHeight}})}
-    //     contentOffset={Platform.select({
-    //       ios: {
-    //         x: 0,
-    //         y: -headerHeight,
-    //       },
-    //     })}>
-    //     {renderItem}
-    //   </Animated.ScrollView>
-    // );
-
-    return (
-      <ScrollView sceneKey={route.key} ref={getRefForKey(route.key)}>
-        {renderItem}
-      </ScrollView>
-    );
+    return renderTabScene(route);
   };
 
   return (
