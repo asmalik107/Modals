@@ -156,7 +156,13 @@ export const Container: FC<ContainerProps> = ({header}) => {
 
   return (
     <TabsContext.Provider
-      value={{trackRef, scrollHandler, headerHeight, minHeight: layout.height}}>
+      value={{
+        trackRef,
+        scrollHandler,
+        headerHeight,
+        minHeight: layout.height,
+        ...sceneProps,
+      }}>
       <View style={[styles.container]}>
         <AnimatedHeader
           containerStyle={animatedHeaderStyle}

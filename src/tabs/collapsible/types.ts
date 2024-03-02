@@ -15,7 +15,10 @@ export type ContainerProps = {
   header: React.ReactElement;
 };
 
-export type TabContextType = {
+export type TabContextType = Pick<
+  ScrollViewProps,
+  'onMomentumScrollEnd' | 'onMomentumScrollBegin' | 'onScrollEndDrag'
+> & {
   trackRef: (key: string, ref: ScrollView) => void;
   scrollHandler: ScrollViewProps['onScroll'];
   headerHeight: number;

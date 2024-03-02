@@ -1,6 +1,7 @@
-import {Animated, Platform, StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {useTabsContext} from './Context';
 import {FC} from 'react';
+import Animated from 'react-native-reanimated';
 
 type ScrollViewProps = {
   sceneKey: string;
@@ -14,7 +15,8 @@ const styles = StyleSheet.create({
 });
 
 export const ScrollView: FC<ScrollViewProps> = ({sceneKey, children}) => {
-  const {trackRef, scrollHandler, headerHeight, minHeight} = useTabsContext();
+  const {trackRef, scrollHandler, headerHeight, minHeight, ...rest} =
+    useTabsContext();
 
   return (
     <Animated.ScrollView
@@ -22,7 +24,7 @@ export const ScrollView: FC<ScrollViewProps> = ({sceneKey, children}) => {
       ref={(ref: Animated.ScrollView) => {
         trackRef(sceneKey, ref);
       }}
-      // {...sceneProps}
+      {...rest}
       bounces={false}
       contentContainerStyle={[
         styles.scroll,
