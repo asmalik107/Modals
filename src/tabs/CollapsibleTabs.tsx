@@ -1,6 +1,6 @@
 import {Route} from 'react-native-tab-view';
 import {Tabs} from './collapsible';
-import {FirstRoute, Header, SecondRoute, ThirdRoute} from './TabViews';
+import {SecondRoute, ThirdRoute} from './TabViews';
 import {StyleSheet, Text, View} from 'react-native';
 import {FC} from 'react';
 
@@ -28,6 +28,13 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 16,
+  },
+  header: {
+    backgroundColor: 'green',
+    // alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'green',
+    width: 300,
   },
 });
 
@@ -90,6 +97,21 @@ export const renderTabScene = (route: Route) => {
   }
 
   return renderItem;
+};
+
+const Header = () => {
+  return (
+    <View style-={styles.header}>
+      <View accessible style={styles.card}>
+        <Text>Header 1</Text>
+        <Text>Content</Text>
+      </View>
+      <View accessible style={styles.card}>
+        <Text>Header 2</Text>
+        <Text>Content</Text>
+      </View>
+    </View>
+  );
 };
 
 export const CollapsibleTabs = () => {

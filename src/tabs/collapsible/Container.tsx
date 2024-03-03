@@ -17,8 +17,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
+    // alignItems: 'center',
     backgroundColor: 'lightblue',
-    alignItems: 'center',
     top: 0,
     width: '100%',
     position: 'absolute',
@@ -32,9 +32,6 @@ const styles = StyleSheet.create({
   },
   tabBar: {
     zIndex: 10,
-  },
-  scroll: {
-    flexGrow: 1,
   },
 });
 
