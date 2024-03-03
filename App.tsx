@@ -18,7 +18,7 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import CardScreen from './src/cards/Card';
 import TestScreen from './src/accessibility/Test';
 import TranslationsScreen from './src/translations/Translations';
-import CollapsibleTabsScreen from './src/tabs/CollapsibleTabs';
+import CollapsibleTabsScreen from './src/tabs/collapsible/example/CollapsibleTabs';
 
 export type RootStackParamList = {
   Home: undefined;

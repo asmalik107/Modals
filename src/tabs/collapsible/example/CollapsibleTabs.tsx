@@ -1,6 +1,6 @@
 import {Route} from 'react-native-tab-view';
-import {Tabs} from './collapsible';
-import {ThirdRoute} from './TabViews';
+import {Tabs} from '..';
+import {ThirdRoute} from '../../TabViews';
 import {StyleSheet, Text, View} from 'react-native';
 import {FC} from 'react';
 
