@@ -1,6 +1,6 @@
 import {Route} from 'react-native-tab-view';
 import {Tabs} from './collapsible';
-import {SecondRoute, ThirdRoute} from './TabViews';
+import {ThirdRoute} from './TabViews';
 import {StyleSheet, Text, View} from 'react-native';
 import {FC} from 'react';
 
@@ -44,16 +44,19 @@ type TestData = {
   subtitle: string;
 };
 
-const generateObjectList = (count: number): TestData[] => {
+const generateObjectList = (
+  count: number,
+  type: 'FlatList' | 'ScrollView' = 'ScrollView',
+): TestData[] => {
   return Array.from({length: count}, (_, index) => ({
     id: index + 1,
-    title: `Title ${index + 1}`,
+    title: `${type} Title ${index + 1}`,
     subtitle: `SubTitle ${index + 1}`,
   }));
 };
 
-// Example: Generate a list of 5 objects
-const data: TestData[] = generateObjectList(20);
+const scrollData: TestData[] = generateObjectList(20);
+const ListData: TestData[] = generateObjectList(30, 'FlatList');
 
 const Card: FC<TestData> = ({title, subtitle}) => {
   return (
@@ -69,19 +72,21 @@ export const renderTabScene = (route: Route) => {
   switch (route.key) {
     case 'first':
       renderItem = (
-        <Tabs.ScrollView sceneKey={route.key}>
-          <>
-            {data.map(item => (
-              <Card key={item.id} {...item} />
-            ))}
-          </>
-        </Tabs.ScrollView>
+        <Tabs.FlatList
+          sceneKey={route.key}
+          data={ListData}
+          renderItem={({item}) => <Card {...item} />}
+        />
       );
       break;
     case 'second':
       renderItem = (
         <Tabs.ScrollView sceneKey={route.key}>
-          <SecondRoute />
+          <>
+            {scrollData.map(item => (
+              <Card key={item.id} {...item} />
+            ))}
+          </>
         </Tabs.ScrollView>
       );
       break;
