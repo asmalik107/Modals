@@ -6,6 +6,10 @@ import {
   useAnimatedScrollHandler,
 } from 'react-native-reanimated';
 
+const isFlatList = (ref: ScrollView | FlatList): ref is FlatList<unknown> => {
+  return (ref as FlatList<unknown>).scrollToOffset !== undefined;
+};
+
 export const useScrollManager = (
   routes: {key: string; title: string}[],
   headerHeight: number,
@@ -36,34 +40,40 @@ export const useScrollManager = (
   ) => {
     /* header visible */
     if (scrollValue <= tabViewOffset + headerHeight) {
-      scrollRef.scrollTo({
-        y: Math.max(
-          Math.min(scrollValue, tabViewOffset + headerHeight),
-          tabViewOffset,
-        ),
-        animated: false,
-      });
-      // scrollRef.scrollToOffset({
-      //   offset: Math.max(
-      //     Math.min(scrollValue, tabViewOffset + headerHeight),
-      //     tabViewOffset,
-      //   ),
-      //   animated: false,
-      // });
+      if (isFlatList(scrollRef)) {
+        scrollRef.scrollToOffset({
+          offset: Math.max(
+            Math.min(scrollValue, tabViewOffset + headerHeight),
+            tabViewOffset,
+          ),
+          animated: false,
+        });
+      } else {
+        scrollRef.scrollTo({
+          y: Math.max(
+            Math.min(scrollValue, tabViewOffset + headerHeight),
+            tabViewOffset,
+          ),
+          animated: false,
+        });
+      }
       tabkeyToScrollPosition[key] = scrollValue;
     } else if (
       /* header hidden */
       tabkeyToScrollPosition[key] < tabViewOffset + headerHeight ||
       tabkeyToScrollPosition[key] == null
     ) {
-      // scrollRef.scrollToOffset({
-      //   offset: tabViewOffset + headerHeight,
-      //   animated: false,
-      // });
-      scrollRef.scrollTo({
-        y: tabViewOffset + headerHeight,
-        animated: false,
-      });
+      if (isFlatList(scrollRef)) {
+        scrollRef.scrollToOffset({
+          offset: tabViewOffset + headerHeight,
+          animated: false,
+        });
+      } else {
+        scrollRef.scrollTo({
+          y: tabViewOffset + headerHeight,
+          animated: false,
+        });
+      }
       tabkeyToScrollPosition[key] = tabViewOffset + headerHeight;
     }
   };
