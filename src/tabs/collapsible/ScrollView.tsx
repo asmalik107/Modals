@@ -1,12 +1,8 @@
 import {Platform, StyleSheet} from 'react-native';
 import {useTabsContext} from './Context';
 import {FC} from 'react';
+import {ScrollViewProps} from './types';
 import Animated from 'react-native-reanimated';
-
-type ScrollViewProps = {
-  sceneKey: string;
-  children?: React.ReactElement;
-};
 
 const styles = StyleSheet.create({
   scroll: {
