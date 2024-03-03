@@ -2,7 +2,8 @@ import {
   ViewStyle,
   LayoutChangeEvent,
   ScrollView,
-  ScrollViewProps,
+  ScrollViewProps as RNScrollViewProps,
+  FlatListProps as RNFlatListProps,
 } from 'react-native';
 
 export type HeaderProps = {
@@ -17,7 +18,16 @@ export type ContainerProps = {
 
 export type TabContextType = {
   trackRef: (key: string, ref: ScrollView) => void;
-  scrollHandler: ScrollViewProps['onScroll'];
+  scrollHandler: RNScrollViewProps['onScroll'];
   headerHeight: number;
   minHeight: number;
+};
+
+export type ScrollViewProps = {
+  sceneKey: string;
+  children?: React.ReactElement;
+};
+
+export type FlatListProps<T> = RNFlatListProps<T> & {
+  sceneKey: string;
 };
