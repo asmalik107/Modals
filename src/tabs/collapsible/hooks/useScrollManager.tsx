@@ -1,5 +1,6 @@
 import {useState, useRef, useEffect} from 'react';
 import {Platform, ScrollView} from 'react-native';
+import {FlatList} from 'react-native-gesture-handler';
 import {
   useSharedValue,
   useAnimatedScrollHandler,
@@ -19,9 +20,9 @@ export const useScrollManager = (
 
   const isListGliding = useRef(false);
   const tabkeyToScrollPosition = useRef<{[key: string]: number}>({}).current;
-  const tabkeyToScrollableChildRef = useRef<{[key: string]: ScrollView}>(
-    {},
-  ).current;
+  const tabkeyToScrollableChildRef = useRef<{
+    [key: string]: ScrollView | FlatList;
+  }>({}).current;
 
   useEffect(() => {
     const curRoute = routes[index].key;
@@ -29,7 +30,7 @@ export const useScrollManager = (
   }, [index, headerHeight, scrollY, routes, tabkeyToScrollPosition]);
 
   const scrollToOffset = (
-    scrollRef: ScrollView,
+    scrollRef: ScrollView | FlatList,
     key: string,
     scrollValue: number,
   ) => {
@@ -96,7 +97,7 @@ export const useScrollManager = (
     syncScrollOffset();
   };
 
-  const trackRef = (key: string, ref: ScrollView) => {
+  const trackRef = (key: string, ref: ScrollView | FlatList) => {
     if (ref) {
       tabkeyToScrollableChildRef[key] = ref;
       scrollToOffset(ref, key, scrollY.value);

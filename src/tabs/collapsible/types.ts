@@ -4,6 +4,7 @@ import {
   ScrollView,
   ScrollViewProps as RNScrollViewProps,
   FlatListProps as RNFlatListProps,
+  FlatList,
 } from 'react-native';
 import {Route} from 'react-native-tab-view';
 
@@ -19,10 +20,10 @@ export type ContainerProps = {
 };
 
 export type TabContextType = Pick<
-  ScrollViewProps,
+  RNScrollViewProps,
   'onMomentumScrollEnd' | 'onMomentumScrollBegin' | 'onScrollEndDrag'
 > & {
-  trackRef: (key: string, ref: ScrollView) => void;
+  trackRef: (key: string, ref: ScrollView | FlatList) => void;
   scrollHandler: RNScrollViewProps['onScroll'];
   headerHeight: number;
   minHeight: number;
