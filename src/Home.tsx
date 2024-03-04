@@ -80,8 +80,8 @@ function HomeScreen() {
           color="black"
         />
         <Button
-          onPress={() => navigate('HeaderTabs')}
-          title="Collapsible Tabs (old)"
+          onPress={() => navigate('Tabs')}
+          title="RN Collapsible Tabs View"
           color="black"
         />
         <Button
@@ -91,12 +91,12 @@ function HomeScreen() {
         />
         <Button
           onPress={() => navigate('HeaderTabs2')}
-          title="Collapsible Tabs 2"
+          title="Collapsible Tabs Tamagui"
           color="black"
         />
         <Button
           onPress={() => navigate('HeaderTabs3')}
-          title="Collapsible Tabs 3"
+          title="Collapsible Tabs - custom"
           color="black"
         />
         <Button

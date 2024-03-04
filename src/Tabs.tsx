@@ -1,33 +1,28 @@
-import {StyleSheet, View} from 'react-native';
 import {
   MaterialTabBar,
   MaterialTabItem,
   Tabs,
 } from 'react-native-collapsible-tab-view';
+import {
+  Card,
+  Header,
+  ListData,
+  scrollData,
+} from './tabs/collapsible/example/CollapsibleTabs';
 
 const HEADER_HEIGHT = 100;
 
-const styles = StyleSheet.create({
-  header: {
-    height: HEADER_HEIGHT,
-    width: '100%',
-    backgroundColor: '#2196f3',
-    pointerEvents: 'none',
-  },
-  boxA: {
-    backgroundColor: 'white',
-  },
-  boxB: {
-    backgroundColor: '#D8D8D8',
-  },
-  box: {
-    flex: 1,
-  },
-});
-
-const Header = () => {
-  return <View style={styles.header} />;
-};
+// const styles = StyleSheet.create({
+//   boxA: {
+//     backgroundColor: 'white',
+//   },
+//   boxB: {
+//     backgroundColor: '#D8D8D8',
+//   },
+//   box: {
+//     flex: 1,
+//   },
+// });
 
 function TabsComponent() {
   return (
@@ -42,22 +37,31 @@ function TabsComponent() {
             return (
               <MaterialTabItem
                 {...p}
-                accessibilityLabel="Test"
+                accessibilityLabel={p.name}
                 accessibilityRole="tab"
               />
             );
           }}
         />
       )}>
-      <Tabs.Tab name="A">
+      <Tabs.Tab name="First">
+        <Tabs.FlatList
+          data={ListData}
+          renderItem={({item}) => <Card {...item} />}
+        />
+      </Tabs.Tab>
+      <Tabs.Tab name="Second">
         <Tabs.ScrollView>
-          <View style={[styles.box, styles.boxA]} />
+          {scrollData.map(item => (
+            <Card key={item.id} {...item} />
+          ))}
         </Tabs.ScrollView>
       </Tabs.Tab>
-      <Tabs.Tab name="B">
-        <Tabs.ScrollView>
-          <View style={[styles.box, styles.boxB]} />
-        </Tabs.ScrollView>
+      <Tabs.Tab name="Third">
+        <Tabs.FlatList
+          data={ListData}
+          renderItem={({item}) => <Card {...item} />}
+        />
       </Tabs.Tab>
     </Tabs.Container>
   );

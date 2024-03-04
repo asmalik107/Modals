@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'green',
     width: 300,
+    pointerEvents: 'none',
   },
 });
 
@@ -55,10 +56,10 @@ const generateObjectList = (
   }));
 };
 
-const scrollData: TestData[] = generateObjectList(20);
-const ListData: TestData[] = generateObjectList(30, 'FlatList');
+export const scrollData: TestData[] = generateObjectList(20);
+export const ListData: TestData[] = generateObjectList(30, 'FlatList');
 
-const Card: FC<TestData> = ({title, subtitle}) => {
+export const Card: FC<TestData> = ({title, subtitle}) => {
   return (
     <View accessible style={styles.card}>
       <Text style={styles.title}>{title}</Text>
@@ -104,7 +105,7 @@ export const renderTabScene = (route: Route) => {
   return renderItem;
 };
 
-const Header = () => {
+export const Header = () => {
   return (
     <View style-={styles.header}>
       <View accessible style={styles.card}>
