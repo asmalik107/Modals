@@ -58,6 +58,7 @@ const generateObjectList = (
 
 export const scrollData: TestData[] = generateObjectList(20);
 export const ListData: TestData[] = generateObjectList(30, 'FlatList');
+export const FlashListData: TestData[] = generateObjectList(30, 'FlashList');
 
 export const Card: FC<TestData> = ({title, subtitle}) => {
   return (

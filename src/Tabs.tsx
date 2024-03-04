@@ -5,6 +5,7 @@ import {
 } from 'react-native-collapsible-tab-view';
 import {
   Card,
+  FlashListData,
   Header,
   ListData,
   scrollData,
@@ -65,8 +66,8 @@ function TabsComponent() {
         </Tabs.ScrollView>
       </Tabs.Tab>
       <Tabs.Tab name="Third">
-        <Tabs.FlatList
-          data={ListData}
+        <Tabs.FlashList
+          data={FlashListData}
           renderItem={({item}) => <Card {...item} />}
         />
       </Tabs.Tab>
