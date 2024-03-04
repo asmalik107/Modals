@@ -107,12 +107,12 @@ export const renderTabScene = (route: Route) => {
 
 export const Header = () => {
   return (
-    <View style-={styles.header}>
-      <View accessible style={styles.card}>
+    <View style-={styles.header} pointerEvents="box-none">
+      <View accessible style={styles.card} pointerEvents="box-none">
         <Text>Header 1</Text>
         <Text>Content</Text>
       </View>
-      <View accessible style={styles.card}>
+      <View accessible style={styles.card} pointerEvents="box-none">
         <Text>Header 2</Text>
         <Text>Content</Text>
       </View>

@@ -9,6 +9,8 @@ import {
   ListData,
   scrollData,
 } from './tabs/collapsible/example/CollapsibleTabs';
+import {useState} from 'react';
+import {View} from 'react-native';
 
 const HEADER_HEIGHT = 100;
 
@@ -25,24 +27,29 @@ const HEADER_HEIGHT = 100;
 // });
 
 function TabsComponent() {
+  const [selectedIndex, setSelectedIndex] = useState(0);
   return (
     <Tabs.Container
       renderHeader={Header}
       headerHeight={HEADER_HEIGHT}
+      onTabChange={({index}) => setSelectedIndex(index)}
       renderTabBar={props => (
-        <MaterialTabBar
-          {...props}
-          // eslint-disable-next-line react/no-unstable-nested-components
-          TabItemComponent={p => {
-            return (
-              <MaterialTabItem
-                {...p}
-                accessibilityLabel={p.name}
-                accessibilityRole="tab"
-              />
-            );
-          }}
-        />
+        <View accessibilityRole="tablist">
+          <MaterialTabBar
+            {...props}
+            // eslint-disable-next-line react/no-unstable-nested-components
+            TabItemComponent={p => {
+              return (
+                <MaterialTabItem
+                  {...p}
+                  accessibilityLabel={`${p.name}, ${p.index + 1} of 3`}
+                  accessibilityRole="tab"
+                  accessibilityState={{selected: p.index === selectedIndex}}
+                />
+              );
+            }}
+          />
+        </View>
       )}>
       <Tabs.Tab name="First">
         <Tabs.FlatList
