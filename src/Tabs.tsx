@@ -10,7 +10,7 @@ import {
   ListData,
   scrollData,
 } from './tabs/collapsible/example/CollapsibleTabs';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {View} from 'react-native';
 
 const HEADER_HEIGHT = 100;
@@ -29,10 +29,20 @@ const HEADER_HEIGHT = 100;
 
 function TabsComponent() {
   const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Creating a timeout within the useEffect hook
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 5000);
+  }, []);
+
   return (
     <Tabs.Container
-      renderHeader={Header}
-      headerHeight={HEADER_HEIGHT}
+      renderHeader={!isLoading ? Header : undefined}
+      headerHeight={undefined}
       onTabChange={({index}) => setSelectedIndex(index)}
       renderTabBar={props => (
         <View accessibilityRole="tablist">
