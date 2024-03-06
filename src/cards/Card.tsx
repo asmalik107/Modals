@@ -1,5 +1,5 @@
 import {PersonStanding} from '@tamagui/lucide-icons';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -99,6 +99,10 @@ function CardScreen() {
             </View>
           </View>
         </View>
+        <Pressable accessible style={styles.card} accessibilityRole="link">
+          <Text testID="testID1">Some Text </Text>
+          <Text testID="testID2">Other Text </Text>
+        </Pressable>
       </View>
     </ScrollView>
   );
