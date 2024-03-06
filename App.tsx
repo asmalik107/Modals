@@ -19,6 +19,7 @@ import CardScreen from './src/cards/Card';
 import TestScreen from './src/accessibility/Test';
 import TranslationsScreen from './src/translations/Translations';
 import CollapsibleTabsScreen from './src/tabs/collapsible/example/CollapsibleTabs';
+import HeaderTabs4 from './src/tabs/HeaderTabs4';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -28,6 +29,7 @@ export type RootStackParamList = {
   HeaderTabs: undefined;
   HeaderTabs2: undefined;
   HeaderTabs3: undefined;
+  HeaderTabs4: undefined;
   Cards: undefined;
   Accessibility: undefined;
   Translations: undefined;
@@ -70,6 +72,7 @@ function App() {
                 <Stack.Screen name="HeaderTabs" component={HeaderTabs} />
                 <Stack.Screen name="HeaderTabs2" component={HeaderTabs2} />
                 <Stack.Screen name="HeaderTabs3" component={HeaderTabs3} />
+                <Stack.Screen name="HeaderTabs4" component={HeaderTabs4} />
                 <Stack.Screen name="Cards" component={CardScreen} />
                 <Stack.Screen name="Accessibility" component={TestScreen} />
                 <Stack.Screen
