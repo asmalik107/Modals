@@ -26,9 +26,9 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: 'lightblue',
     alignItems: 'center',
-    //top: 0,
+//    top: 0,
     width: '100%',
-    //position: 'absolute',
+//    position: 'absolute',
     //zIndex: 2,
   },
   indicatorStyle: {
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'pink',
   },
   tabBar: {
-    zIndex: 10,
+    //zIndex: 10,
   },
   scroll: {
     flexGrow: 1,
@@ -200,7 +200,7 @@ const HeaderTabs: FC = () => {
 
     const translateY = interpolate(
       scrollY.value,
-      [tabViewOffset, tabViewOffset + headerHeight],
+      [0,  headerHeight],
       [0, -headerHeight],
       {extrapolateLeft: Extrapolation.CLAMP},
     );
@@ -218,23 +218,14 @@ const HeaderTabs: FC = () => {
       {extrapolateRight: Extrapolation.CLAMP},
     );
 
-    // const translateY = interpolate(
-    //   scrollY.value,
-    //   [tabViewOffset, tabViewOffset + headerHeight],
-    //   [headerHeight, 0],
-    //   Extrapolation.CLAMP,
-    // );
-
-    const height = interpolate(
+    const translateY = interpolate(
       scrollY.value,
       [tabViewOffset, tabViewOffset + headerHeight],
       [headerHeight, 0],
       Extrapolation.CLAMP,
     );
 
-    // return {transform: [{translateY}]};
-
-    return headerHeight;
+    return {transform: [{translateY}]};
   });
 
   const renderTabBar = (props: TabBarProps<Route>) => (
@@ -266,11 +257,11 @@ const HeaderTabs: FC = () => {
           }),
         ]}
         onScroll={scrollHandler}
-        contentInset={Platform.select({ios: {top: headerHeight}})}
+        contentInset={Platform.select({ios: {top: 0}})}
         contentOffset={Platform.select({
           ios: {
             x: 0,
-            y: -headerHeight,
+            y: 0,
           },
         })}>
         {renderItem}
