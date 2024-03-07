@@ -26,9 +26,9 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: 'lightblue',
     alignItems: 'center',
-//    top: 0,
+    //top: 0,
     width: '100%',
-//    position: 'absolute',
+    //position: 'absolute',
     //zIndex: 2,
   },
   indicatorStyle: {
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'pink',
   },
   tabBar: {
-    //zIndex: 10,
+    zIndex: 10,
   },
   scroll: {
     flexGrow: 1,
@@ -200,7 +200,7 @@ const HeaderTabs: FC = () => {
 
     const translateY = interpolate(
       scrollY.value,
-      [0,  headerHeight],
+      [tabViewOffset, tabViewOffset + headerHeight],
       [0, -headerHeight],
       {extrapolateLeft: Extrapolation.CLAMP},
     );
@@ -257,11 +257,11 @@ const HeaderTabs: FC = () => {
           }),
         ]}
         onScroll={scrollHandler}
-        contentInset={Platform.select({ios: {top: 0}})}
+        contentInset={Platform.select({ios: {top: headerHeight}})}
         contentOffset={Platform.select({
           ios: {
             x: 0,
-            y: 0,
+            y: -headerHeight,
           },
         })}>
         {renderItem}
@@ -277,7 +277,7 @@ const HeaderTabs: FC = () => {
       />
       <TabView
         lazy
-        // style={{flex: 1}}
+        style={[StyleSheet.absoluteFillObject]}
         //sceneContainerStyle={{backgroundColor: 'green'}}
         navigationState={{index, routes}}
         renderScene={renderScene}
