@@ -65,6 +65,11 @@ function HomeScreen() {
           color="black"
         />
         <Button
+          onPress={() => navigate('Scroll')}
+          title="Scroll"
+          color="black"
+        />
+        <Button
           onPress={() => navigate('Component')}
           title="Component"
           color="black"

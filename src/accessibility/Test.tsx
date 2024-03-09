@@ -64,6 +64,7 @@ function TestScreen() {
           <Text>Testing accessibility</Text>
         </View>
         <View accessible style={styles.card}>
+          <Text accessibilityLabel="T K 9 1 1 1 / 4 0">TK9111</Text>
           <Text style={styles.text}>Test</Text>
           <Text style={styles.text}>text one</Text>
           <Text style={styles.text}>text two</Text>
