@@ -70,6 +70,11 @@ function HomeScreen() {
           color="black"
         />
         <Button
+          onPress={() => navigate('ScrollTab')}
+          title="ScrollTab"
+          color="black"
+        />
+        <Button
           onPress={() => navigate('Component')}
           title="Component"
           color="black"
