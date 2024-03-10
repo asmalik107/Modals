@@ -21,6 +21,7 @@ import TranslationsScreen from './src/translations/Translations';
 import CollapsibleTabsScreen from './src/tabs/collapsible/example/CollapsibleTabs';
 import HeaderTabs4 from './src/tabs/HeaderTabs4';
 import ScrollScreen from './src/animation/Scroll';
+import ScrollTabScreen from './src/animation/ScrollTab';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -36,6 +37,7 @@ export type RootStackParamList = {
   Translations: undefined;
   CollapsibleTabs: undefined;
   Scroll: undefined;
+  ScrollTab: undefined;
 };
 
 export type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
@@ -82,6 +84,7 @@ function App() {
                   component={TranslationsScreen}
                 />
                 <Stack.Screen name="Scroll" component={ScrollScreen} />
+                <Stack.Screen name="ScrollTab" component={ScrollTabScreen} />
               </Stack.Navigator>
             </NavigationContainer>
           </BottomSheetModalProvider>
