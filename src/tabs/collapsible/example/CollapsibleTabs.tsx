@@ -47,7 +47,7 @@ type TestData = {
 
 const generateObjectList = (
   count: number,
-  type: 'FlatList' | 'ScrollView' = 'ScrollView',
+  type: 'FlatList' | 'ScrollView' | 'FlashList' = 'ScrollView',
 ): TestData[] => {
   return Array.from({length: count}, (_, index) => ({
     id: index + 1,

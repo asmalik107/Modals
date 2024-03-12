@@ -72,10 +72,14 @@ const CollapsibleHeader = () => {
 
   const animatedHeaderStyle = useAnimatedStyle(() => {
     console.log(scrollY.value);
+    if (isHeaderOpen.value && headerHeight === 0) {
+      return {};
+    }
+
     return {
       height: interpolate(
         scrollY.value,
-        [10, 100],
+        [0, 10],
         [headerHeight, 0],
         Extrapolate.CLAMP,
       ),
@@ -107,6 +111,7 @@ const CollapsibleHeader = () => {
               backgroundColor: 'lightblue',
               justifyContent: 'center',
               alignItems: 'center',
+              padding: 20,
             },
             animatedHeaderStyle,
           ]}>

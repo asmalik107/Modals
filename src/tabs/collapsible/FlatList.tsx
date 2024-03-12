@@ -1,10 +1,9 @@
 import Animated from 'react-native-reanimated';
 import {FlatListProps} from './types';
-import {FC} from 'react';
 import {useTabsContext} from './Context';
 import {Platform} from 'react-native';
 
-export const FlatList: FC<FlatListProps<unknown>> = ({sceneKey, ...props}) => {
+export const FlatList = <T,>({sceneKey, ...props}: FlatListProps<T>) => {
   const {trackRef, scrollHandler, headerHeight, minHeight} = useTabsContext();
 
   return (
