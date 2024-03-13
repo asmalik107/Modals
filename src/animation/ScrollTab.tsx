@@ -6,6 +6,10 @@ import Animated, {
   FadeInUp,
   FadeInDown,
   ReduceMotion,
+  SlideInUp,
+  SlideInDown,
+  FadeIn,
+  FadeOut,
 } from 'react-native-reanimated';
 import {Route, TabView} from 'react-native-tab-view';
 import {RenderSceneProps, renderTabScene} from '../tabs/TabViews';
@@ -24,6 +28,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    zIndex: 1,
   },
   text: {
     fontSize: 20,
@@ -31,19 +36,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const FadeIn = FadeInUp.springify();
-// .damping(30)
-// .mass(5)
-// .stiffness(10)
-// .restDisplacementThreshold(0.1)
-// .restSpeedThreshold(5);
+const Enter = FadeIn.duration(300);
 
-const FadeOut = FadeInDown.springify(500)
-  .damping(30)
-  .mass(5)
-  .stiffness(10)
-  .restDisplacementThreshold(0.1)
-  .restSpeedThreshold(5);
+const Exit = FadeOut.duration(300);
 
 const CollapsibleHeader = () => {
   const layout = useWindowDimensions();
@@ -83,10 +78,7 @@ const CollapsibleHeader = () => {
   return (
     <View style={styles.container}>
       {isHeaderOpen && (
-        <Animated.View
-          style={styles.header}
-          entering={FadeIn}
-          exiting={FadeOut}>
+        <Animated.View style={styles.header} entering={Enter} exiting={Exit}>
           <Text style={styles.text}>Collapsible Header</Text>
         </Animated.View>
       )}
