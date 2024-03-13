@@ -2,14 +2,14 @@ import {View, Text, StyleSheet, useWindowDimensions} from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedScrollHandler,
-  useAnimatedStyle,
-  interpolate,
-  Extrapolate,
+  runOnJS,
+  FadeInUp,
+  FadeInDown,
+  ReduceMotion,
 } from 'react-native-reanimated';
 import {Route, TabView} from 'react-native-tab-view';
 import {RenderSceneProps, renderTabScene} from '../tabs/TabViews';
-import {useRef, useState} from 'react';
-import {useSize} from '../hooks/useSize';
+import {useState} from 'react';
 
 const styles = StyleSheet.create({
   container: {
@@ -19,7 +19,31 @@ const styles = StyleSheet.create({
   scroll: {
     flexGrow: 1,
   },
+  header: {
+    backgroundColor: 'lightblue',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  text: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
 });
+
+const FadeIn = FadeInUp.springify();
+// .damping(30)
+// .mass(5)
+// .stiffness(10)
+// .restDisplacementThreshold(0.1)
+// .restSpeedThreshold(5);
+
+const FadeOut = FadeInDown.springify(500)
+  .damping(30)
+  .mass(5)
+  .stiffness(10)
+  .restDisplacementThreshold(0.1)
+  .restSpeedThreshold(5);
 
 const CollapsibleHeader = () => {
   const layout = useWindowDimensions();
@@ -31,59 +55,16 @@ const CollapsibleHeader = () => {
 
   const [index, setIndex] = useState(0);
 
-  // const [size, onLayout] = useSize();
-  // const headerHeight = size?.height ?? 0;
-
-  const headerRef = useRef(null);
-
-  const [headerHeight, setHeaderHeight] = useState(0);
-  const isHeaderOpen = useSharedValue(true);
-
-  // const onLayout = event => {
-  //   setHeaderHeight(event.nativeEvent.layout.height);
-  // };
-
-  console.log('headerHeight', headerHeight);
-
-  const onLayout = () => {
-    headerRef.current.measure((x, y, width, height) => {
-      setHeaderHeight(height);
-
-      console.log('onLayout', height);
-    });
-  };
+  const [isHeaderOpen, setHeaderOpen] = useState(true);
 
   const scrollY = useSharedValue(0);
 
   const onScroll = useAnimatedScrollHandler({
     onScroll: event => {
       scrollY.value = event.contentOffset.y;
+
+      runOnJS(setHeaderOpen)(scrollY.value < 30);
     },
-  });
-
-  const handleScroll = event => {
-    const currentScrollY = event.nativeEvent.contentOffset.y;
-    const isClosed = currentScrollY > headerHeight; // Adjust the threshold as needed
-
-    if (isHeaderOpen.value !== isClosed) {
-      isHeaderOpen.value = !isClosed;
-    }
-  };
-
-  const animatedHeaderStyle = useAnimatedStyle(() => {
-    console.log(scrollY.value);
-    if (isHeaderOpen.value && headerHeight === 0) {
-      return {};
-    }
-
-    return {
-      height: interpolate(
-        scrollY.value,
-        [0, 10],
-        [headerHeight, 0],
-        Extrapolate.CLAMP,
-      ),
-    };
   });
 
   const renderScene = ({route}: RenderSceneProps<Route>) => {
@@ -93,9 +74,7 @@ const CollapsibleHeader = () => {
       <Animated.ScrollView
         bounces={false}
         contentContainerStyle={[styles.scroll]}
-        onScroll={onScroll}
-        onMomentumScrollEnd={handleScroll}>
-        <Text>{isHeaderOpen ? 'Close Header' : 'Open Header'}</Text>
+        onScroll={onScroll}>
         {renderItem}
       </Animated.ScrollView>
     );
@@ -103,23 +82,14 @@ const CollapsibleHeader = () => {
 
   return (
     <View style={styles.container}>
-      <View ref={headerRef} onLayout={onLayout}>
+      {isHeaderOpen && (
         <Animated.View
-          //          onLayout={onLayout}
-          style={[
-            {
-              backgroundColor: 'lightblue',
-              justifyContent: 'center',
-              alignItems: 'center',
-              padding: 20,
-            },
-            animatedHeaderStyle,
-          ]}>
-          <Text style={{fontSize: 20, fontWeight: 'bold'}}>
-            Collapsible Header
-          </Text>
+          style={styles.header}
+          entering={FadeIn}
+          exiting={FadeOut}>
+          <Text style={styles.text}>Collapsible Header</Text>
         </Animated.View>
-      </View>
+      )}
       <TabView
         navigationState={{index, routes}}
         renderScene={renderScene}
