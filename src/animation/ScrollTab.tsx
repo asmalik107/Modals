@@ -4,16 +4,11 @@ import Animated, {
   useAnimatedScrollHandler,
   runOnJS,
   FadeInUp,
-  FadeInDown,
-  ReduceMotion,
-  SlideInUp,
-  SlideInDown,
-  FadeIn,
-  FadeOut,
+  FadeOutDown,
 } from 'react-native-reanimated';
 import {Route, TabView} from 'react-native-tab-view';
 import {RenderSceneProps, renderTabScene} from '../tabs/TabViews';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,20 +20,31 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: 'lightblue',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
+    padding: 10,
     zIndex: 1,
   },
-  text: {
-    fontSize: 20,
-    fontWeight: 'bold',
+  card: {
+    backgroundColor: 'white',
+    padding: 16,
+    marginHorizontal: 16,
+    borderColor: 'white',
+    marginVertical: 10,
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+
+    elevation: 2,
   },
 });
 
-const Enter = FadeIn.duration(300);
+const Enter = FadeInUp.duration(300);
 
-const Exit = FadeOut.duration(300);
+const Exit = FadeOutDown.duration(300);
 
 const CollapsibleHeader = () => {
   const layout = useWindowDimensions();
@@ -62,6 +68,15 @@ const CollapsibleHeader = () => {
     },
   });
 
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Creating a timeout within the useEffect hook
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 5000);
+  }, []);
+
   const renderScene = ({route}: RenderSceneProps<Route>) => {
     const renderItem = renderTabScene(route);
 
@@ -79,7 +94,18 @@ const CollapsibleHeader = () => {
     <View style={styles.container}>
       {isHeaderOpen && (
         <Animated.View style={styles.header} entering={Enter} exiting={Exit}>
-          <Text style={styles.text}>Collapsible Header</Text>
+          <View style-={styles.header} pointerEvents="box-none">
+            {!isLoading && (
+              <View accessible style={styles.card} pointerEvents="box-none">
+                <Text>Header 1</Text>
+                <Text>Content</Text>
+              </View>
+            )}
+            <View accessible style={styles.card} pointerEvents="box-none">
+              <Text>Header 2</Text>
+              <Text>Content</Text>
+            </View>
+          </View>
         </Animated.View>
       )}
       <TabView
