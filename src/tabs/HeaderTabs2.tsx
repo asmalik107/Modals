@@ -78,11 +78,11 @@ const HeaderTabs: FC = () => {
         width={layout.width}
         orientation="horizontal"
         flexDirection="column">
-        <Tabs.List>
-          <Tabs.Tab value="tab1">
+        <Tabs.List accessibilityRole="tablist">
+          <Tabs.Tab value="tab1" accessibilityRole="tab" accessible>
             <SizableText>Tab 1</SizableText>
           </Tabs.Tab>
-          <Tabs.Tab value="tab2">
+          <Tabs.Tab value="tab2" accessibilityRole="tab" accessible>
             <SizableText>Tab 2</SizableText>
           </Tabs.Tab>
         </Tabs.List>
